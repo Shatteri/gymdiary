@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <style>
+            table, td, th {
+                text-align: center;
+                padding: 2px;
+            }
+        </style>
+        <title>Workout Diary</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+
+    <body>
+        <h1>Workout diary</h1>
+        <table>
+            <tr>
+                <th><h2>Week</h2></th>
+                <th><h2>Workout</h2></th>
+                <th><h2>Sets</h2></th>
+                <th><h2>Reps</h2></th>
+                <th><h2>Weight</h2></th>
+            </tr>
+            <tr th:each="workout : ${workouts}">
+                <td><h3><a th:href="@{/week/{id}(id=${workout.week})}" th:text="Week + ' ' + ${workout.week}"></a></h3></td>
+                <td><h3 th:text="${workout.exercise}"></h3></td>
+                <td><h3 th:text="${workout.sets}"></h3></td>
+                <td><h3 th:text="${workout.reps}"></h3></td>
+                <td><h3 th:text="${workout.weight}"></h3></td>
+                <td><h3 th:text="${workout.category.name}"></h3></td>
+                <td><a th:href="@{/delete/{id}(id=${workout.id})}">Delete</a></td>
+                <td><a th:href="@{/log/{id}(id=${workout.id})}">Log workout</a></td>
+            </tr>
+        </table>
+        <button onclick="location.href='/add'">Add routine</button>
+    </body>
+</html>

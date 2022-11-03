@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+        input[type=submit] {
+              width: 10%;
+              background-color: #4c5baf;
+              color: rgb(199, 199, 199);
+              padding: 14px 20px;
+              margin: 8px 0;
+              border: none;
+              border-radius: 4px;
+              cursor: pointer;
+
+            }
+
+            input[type=submit]:hover {
+              background-color: #3931a0;
+            }
+    </style>
+    <title>Workout Diary</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+    <h1>Workout diary</h1>
+    <table>
+        <tr>
+            <th>
+                <h2>Category</h2>
+            </th>
+            <th>
+                <h2>Workout</h2>
+            </th>
+            <th>
+                <h2>Sets</h2>
+            </th>
+            <th>
+                <h2>Reps</h2>
+            </th>
+            <th>
+                <h2>Weight</h2>
+            </th>
+        </tr>
+        <tr th:each="workout : ${workouts}">
+            <td>
+                <h3 th:text="${workout.category.name}"></h3>
+            </td>
+            <td>
+                <h3 th:text="${workout.exercise}"></h3>
+            </td>
+            <td>
+                <h3 th:text="${workout.sets}"></h3>
+            </td>
+            <td>
+                <h3 th:text="${workout.reps}"></h3>
+            </td>
+            <td>
+                <h3 th:text="${workout.weight}"></h3>
+            </td>
+            <!-- <td><input type="submit" value="a" id="@{/log/{id}(id=${workout.id})}"></input></td> -->
+            <td><a th:href="@{/log/{id}(id=${workout.id})}">Log workout</a></td>
+            <td><a th:href="@{/delete/{id}(id=${workout.id})}">Delete</a></td>
+        </tr>
+    </table>
+
+    <button onclick="location.href='/add'">Add routine</button>
+</body>
+
+</html>

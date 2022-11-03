@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+    <title>Workout Diary</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+    <h1>Workout diary</h1>
+    <table>
+        <tr>
+            <th>
+                <h2>Week number</h2>
+            </th>
+        </tr>
+        <tr th:each="workout : ${workouts}">
+            <td>
+                <h3><a th:href="@{/routine/{id}(id=${workout.week})}" th:text="Week + ' ' + ${workout.week}"></a></h3>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
