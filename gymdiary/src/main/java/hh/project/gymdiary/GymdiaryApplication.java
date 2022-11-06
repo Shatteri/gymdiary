@@ -20,9 +20,10 @@ public class GymdiaryApplication {
 	@Bean
 	public CommandLineRunner workoutDiary(WorkoutRepository wrepo, CategoryRepository crepo) {
 		return (args) -> {
+			crepo.save(new Category("Chest & Biceps"));
 			crepo.save(new Category("Legs"));
-			crepo.save(new Category("Chest"));
-			crepo.save(new Category("Biceps"));
+			crepo.save(new Category("Shoulders & Triceps"));
+			crepo.save(new Category("Back"));
 			
 			wrepo.save(new Workout(1, "Test", 3, 10, 20.5, crepo.findByName("Legs").get(0)));
 			wrepo.save(new Workout(2, "Test2", 3, 10, 30.1, crepo.findByName("Legs").get(0)));

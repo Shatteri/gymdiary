@@ -53,5 +53,9 @@ public class Category {
         this.workouts = workouts;
     }
 
+    @Override
+	public String toString() {
+		return "Category [categoryid=" + categoryid + ", name=" + name + "]";
+	}
     
 }

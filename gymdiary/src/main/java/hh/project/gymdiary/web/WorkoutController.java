@@ -1,7 +1,11 @@
 package hh.project.gymdiary.web;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,21 +22,23 @@ import hh.project.gymdiary.domain.WorkoutRepository;
 
 @Controller
 public class WorkoutController {
-    
+    //SAVE REQUEST URI TO VARIABLE
+    String url;
+
     @Autowired
     private WorkoutRepository wrepo;
     @Autowired
     private CategoryRepository crepo;
 
-    //DISPLAY ALL 
-    @RequestMapping(value={"/", "/diary"})
-    public String workoutDiary(Model model) {
-        model.addAttribute("workouts", wrepo.findAll());
-        return "diary";
-    }
+    //DISPLAY ALL
+    // @RequestMapping(value={"/", "/diary"})
+    // public String workoutDiary(Model model) {
+    //     model.addAttribute("workouts", wrepo.findAll());
+    //     return "diary";
+    // }
 
     //DISPLAY ALL WEEK NUMBERS
-    @RequestMapping(value="/routine", method = RequestMethod.GET)
+    @RequestMapping(value={"/", "/routine"}, method = RequestMethod.GET)
     public String weekRoutine(Model model) {
         model.addAttribute("workouts", wrepo.findAll());
         return "routine";
@@ -52,18 +58,23 @@ public class WorkoutController {
     @RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
     public String deleteWorkout(@PathVariable("id") Long workoutId, Model model) {
         crepo.deleteById(workoutId);
-        return "redirect:../diary";
+        return "redirect:../routine/{id}";
     }
 
     @RequestMapping(value="/log/{id}")
-    public String logWorkout(@PathVariable("id") long workoutId, Model model) {
+    public String logWorkout(@PathVariable("id") long workoutId, Model model, HttpServletRequest request) {
         model.addAttribute("workout", wrepo.findById(workoutId));
         model.addAttribute("categories", crepo.findAll());
+
+        //GET REQUEST URI
+        url = request.getRequestURI().toString();
+        System.out.println(url);
         return "addworkout";
     }
 
     @RequestMapping(value="/add")
     public String addRoutine(Model model) {
+        
         model.addAttribute("workout", new Workout());
         model.addAttribute("categories", crepo.findAll());
         return "addworkout";
@@ -72,6 +83,28 @@ public class WorkoutController {
     @RequestMapping(value="/save", method = RequestMethod.POST)
     public String saveRoutine(@ModelAttribute Workout newroutine, Model model) {
         wrepo.save(newroutine);
+
+        //REDIRECT TO PREVIOUS PAGE IF NOT NULL
+        try {
+            //GET WEEK ID FROM REQUEST URI
+            List<String> urlList = Arrays.asList(url.split("\\s*/\\s*"));
+            String redirectId = urlList.get(2);
+            return"redirect:/routine/"+ redirectId;
+        } catch (Exception e) {
+            return"redirect:/routine";
+        }
+    }
+
+    @RequestMapping(value="/addweek")
+    public String addWeek(Model model) {
+        model.addAttribute("workout", new Workout());
+        model.addAttribute("categories", crepo.findAll());
+        return "addweek";
+    }
+
+    @RequestMapping(value="/saveweek", method = RequestMethod.POST)
+    public String saveWeek(@ModelAttribute Workout newweek, Model model) {
+        wrepo.save(newweek);
         return"redirect:/routine";
     }
 
