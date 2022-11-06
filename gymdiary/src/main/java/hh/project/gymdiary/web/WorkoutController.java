@@ -29,14 +29,7 @@ public class WorkoutController {
     private WorkoutRepository wrepo;
     @Autowired
     private CategoryRepository crepo;
-
-    //DISPLAY ALL
-    // @RequestMapping(value={"/", "/diary"})
-    // public String workoutDiary(Model model) {
-    //     model.addAttribute("workouts", wrepo.findAll());
-    //     return "diary";
-    // }
-
+    
     //DISPLAY ALL WEEK NUMBERS
     @RequestMapping(value={"/", "/routine"}, method = RequestMethod.GET)
     public String weekRoutine(Model model) {
