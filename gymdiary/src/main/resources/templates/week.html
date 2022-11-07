@@ -78,11 +78,10 @@
             </td>
             <!-- <td><input type="submit" value="a" id="@{/log/{id}(id=${workout.id})}"></input></td> -->
             <td><a th:href="@{/log/{id}(id=${workout.id})}">Log workout</a></td>
+            <td><a class="addWorkout" th:href="@{/addworkout/{id}(id=${workout.week})}">Add workout</a></td>
             <td><a th:href="@{/delete/{id}(id=${workout.id})}">Delete</a></td>
         </tr>
     </table>
-
-    <button onclick="location.href='/add'">Add routine</button>
 </body>
 
 </html>

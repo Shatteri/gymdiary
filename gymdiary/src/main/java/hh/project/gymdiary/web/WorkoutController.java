@@ -29,29 +29,26 @@ public class WorkoutController {
     private WorkoutRepository wrepo;
     @Autowired
     private CategoryRepository crepo;
-    
+
     //DISPLAY ALL WEEK NUMBERS
-    @RequestMapping(value={"/", "/routine"}, method = RequestMethod.GET)
+    @RequestMapping(value={"/", "/weeklist"}, method = RequestMethod.GET)
     public String weekRoutine(Model model) {
         model.addAttribute("workouts", wrepo.findAll());
-        return "routine";
+        return "weeklist";
     }
 
     //DISPLAY WEEKLY ROUTINES
-    @RequestMapping(value="/routine/{week}")
+    @RequestMapping(value="/weeklist/{week}")
     public String weekDiary(@PathVariable("week") Long week, Model model) {
         model.addAttribute("workouts", wrepo.findById(week).get());
         model.addAttribute("categories", crepo.findAll());
         return "week";
     }
 
-
-
-
     @RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
     public String deleteWorkout(@PathVariable("id") Long workoutId, Model model) {
         crepo.deleteById(workoutId);
-        return "redirect:../routine/{id}";
+        return "redirect:../weeklist/{id}";
     }
 
     @RequestMapping(value="/log/{id}")
@@ -65,11 +62,11 @@ public class WorkoutController {
         return "addworkout";
     }
 
-    @RequestMapping(value="/add")
-    public String addRoutine(Model model) {
-        
+    @RequestMapping(value="/addworkout/{id}")
+    public String addRoutine(@PathVariable("id") Long categoryid, Model model, HttpServletRequest request) {
+        model.addAttribute("workouts", wrepo.findAll());
         model.addAttribute("workout", new Workout());
-        model.addAttribute("categories", crepo.findAll());
+        model.addAttribute("category", crepo.findById(categoryid).get());
         return "addworkout";
     }
 
@@ -82,11 +79,12 @@ public class WorkoutController {
             //GET WEEK ID FROM REQUEST URI
             List<String> urlList = Arrays.asList(url.split("\\s*/\\s*"));
             String redirectId = urlList.get(2);
-            return"redirect:/routine/"+ redirectId;
+            return"redirect:/weeklist/"+ redirectId;
         } catch (Exception e) {
-            return"redirect:/routine";
+            return"redirect:/weeklist";
         }
     }
+    
 
     @RequestMapping(value="/addweek")
     public String addWeek(Model model) {
@@ -98,7 +96,7 @@ public class WorkoutController {
     @RequestMapping(value="/saveweek", method = RequestMethod.POST)
     public String saveWeek(@ModelAttribute Workout newweek, Model model) {
         wrepo.save(newweek);
-        return"redirect:/routine";
+        return"redirect:/weeklist";
     }
 
 

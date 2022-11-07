@@ -34,7 +34,7 @@
         </tr>
         <tr th:each="workout : ${workouts}">
             <td>
-                <h3><a th:href="@{/routine/{id}(id=${workout.week})}" th:text="Week + ' ' + ${workout.week}"></a></h3>
+                <h3><a th:href="@{/weeklist/{id}(id=${workout.week})}" th:text="Week + ' ' + ${workout.week}"></a></h3>
             </td>
         </tr>
     </table>
